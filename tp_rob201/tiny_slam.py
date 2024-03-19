@@ -64,7 +64,7 @@ class TinySlam:
         """ Useless function, just for the exercise on using the profiler """
         # Remove after TP1
 
-        ranges = np.random.rand(3600)
+        """ranges = np.random.rand(3600)
         ray_angles = np.arange(-np.pi, np.pi, np.pi / 1800)
 
         # Poor implementation of polar to cartesian conversion
@@ -72,4 +72,4 @@ class TinySlam:
         for i in range(3600):
             pt_x = ranges[i] * np.cos(ray_angles[i])
             pt_y = ranges[i] * np.sin(ray_angles[i])
-            points.append([pt_x, pt_y])
+            points.append([pt_x, pt_y])"""

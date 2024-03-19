@@ -1,8 +1,10 @@
 /env
+/venv
 /docs
 src/place_bot/tools/generated_code.py
 src/place_bot/various
 __pycache__
+*.prof
 *.profile
 *.calltree
 place_bot.egg-info

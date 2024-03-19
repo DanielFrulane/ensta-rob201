@@ -13,6 +13,14 @@ def reactive_obst_avoid(lidar):
 
     speed = 0.0
     rotation_speed = 0.0
+    values = lidar.get_sensor_values()
+
+    if(values[180]<50):
+        speed=0.0
+        rotation_speed=0.5
+    else:
+        speed=0.5
+        rotation_speed=0.0
 
     command = {"forward": speed,
                "rotation": rotation_speed}
