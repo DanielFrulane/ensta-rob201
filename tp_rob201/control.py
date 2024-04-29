@@ -40,7 +40,27 @@ def potential_field_control(lidar, current_pose, goal_pose):
     """
     # TODO for TP2
 
-    command = {"forward": 0,
-               "rotation": 0}
+    '''values = lidar.get_sensor_values()
+    angles = lidar.get_ray_angles()
+    nabla = np.array([0,0,0])
+    K_goal = 1
+    threasholdDistance = 1
 
-    return command
+    speed = 0.0
+    rotation_speed = 0.0
+
+    distance = np.sqrt((current_pose[0] - goal_pose[0])**2 + (current_pose[1] - goal_pose[1])**2)
+    for i in range(len(nabla)):
+        result = (K_goal/distance)*(goal_pose[i]-current_pose[i])
+        print("r",i,result)
+        nabla[i] = result
+        print("n", nabla[i])
+
+    rotation_speed=nabla[2]
+    speed=nabla[0]
+
+    command = {"forward": speed,
+               "rotation": rotation_speed}
+
+    return command'''
+    

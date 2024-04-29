@@ -58,7 +58,58 @@ class TinySlam:
         lidar : placebot object with lidar data
         pose : [x, y, theta] nparray, corrected pose in world coordinates
         """
-        # TODO for TP3
+        # TODO for TP3 
+        # angles = lidar.get_ray_angles()
+        # array[array > 3] = 3
+        '''ranges = np.random.rand(360)
+        ray_angles = np.arange(-np.pi,np.pi,np.pi/180)
+        points_x = ranges * np.cos(ray_angles)
+        points_y = ranges * np.sin(ray_angles)
+        points = np.vstack((points_x, points_y))
+
+        bigValue = 30
+        smallValue = 3
+        noValue = 0
+
+        values = lidar.get_sensor_values()
+
+        xVectors = np.array([values[i]*np.cos(i) for i in range(len(values))])
+        yVectors = np.array([values[i]*np.sin(i) for i in range(len(values))])
+        points = np.array([[xVectors[i] + pose[0], yVectors[i] + pose[1]] for i in values])
+
+        self.grid.add_map_points(xVectors,yVectors,bigValue)
+        for i in range(len(values)):
+            self.grid.add_map_line(pose[0],pose[1],points[0],points[1],smallValue)'''
+
+        PROBABILITY_BASE = 1
+        SECURITY_RANGE = 10
+        probability_big = 0.4
+        probability_small = -0.05
+
+        angles = lidar.get_ray_angles()
+        values = lidar.get_sensor_values()
+
+        # position
+        x = pose[0] + values * np.cos(pose[2] + angles)
+        y = pose[1] + values * np.sin(pose[2] + angles)
+        x_free = pose[0] + (values - SECURITY_RANGE) * np.cos(pose[2] + angles)
+        y_free = pose[1] + (values - SECURITY_RANGE) * np.sin(pose[2] + angles)
+        
+
+        # correction
+
+        # repaire absolut
+        points_free = np.vstack((x_free, y_free))
+
+        for tuple in points_free.T:
+            self.grid.add_map_line(pose[0],pose[1],tuple[0],tuple[1],probability_small)
+
+        self.grid.add_map_points(x,y,probability_big)
+
+        # display
+        self.grid.occupancy_map[self.grid.occupancy_map < -PROBABILITY_BASE] = -PROBABILITY_BASE
+        self.grid.occupancy_map[self.grid.occupancy_map > PROBABILITY_BASE] = PROBABILITY_BASE
+        self.grid.display_cv(pose)
 
     def compute(self):
         """ Useless function, just for the exercise on using the profiler """
