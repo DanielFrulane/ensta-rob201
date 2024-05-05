@@ -21,8 +21,11 @@ class Planner:
         """
         # TODO for TP5
 
-        path = [start, goal]  # list of poses
-        return path
+        #path = [start, goal]  # list of poses
+        #return path
+
+        total_path = start
+        
 
     def explore_frontiers(self):
         """ Frontier based exploration """

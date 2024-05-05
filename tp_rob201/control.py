@@ -15,11 +15,12 @@ def reactive_obst_avoid(lidar):
     rotation_speed = 0.0
     values = lidar.get_sensor_values()
 
-    if(values[180]<50):
+    # checking if near an obstacle
+    if(values[180]<50): # turn
         speed=0.0
-        rotation_speed=0.5
-    else:
-        speed=0.5
+        rotation_speed=0.1
+    else: # go forward
+        speed=0.6
         rotation_speed=0.0
 
     command = {"forward": speed,
@@ -39,7 +40,7 @@ def potential_field_control(lidar, current_pose, goal_pose):
     on initial pose, x forward, y on left)
     """
     # TODO for TP2
-
+    # not working
     '''values = lidar.get_sensor_values()
     angles = lidar.get_ray_angles()
     nabla = np.array([0,0,0])

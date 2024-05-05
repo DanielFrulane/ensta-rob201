@@ -22,8 +22,18 @@ class TinySlam:
         pose : [x, y, theta] nparray, position of the robot to evaluate, in world coordinates
         """
         # TODO for TP4
+              
+        angles = lidar.get_ray_angles()
+        values = lidar.get_sensor_values()
 
-        score = 0
+        x = pose[0] + values * np.cos(pose[2] + angles)
+        y = pose[1] + values * np.sin(pose[2] + angles)
+
+        # Apply log function to each value in the vector
+        log_x = np.log(x)
+        log_y = np.log(y)
+
+        score = np.sum(log_x) + np.sum(log_y)
 
         return score
 
@@ -36,7 +46,13 @@ class TinySlam:
                         use self.odom_pose_ref if not given
         """
         # TODO for TP4
-        corrected_pose = odom_pose
+        if odom_pose_ref == None:
+            odom_pose_ref = ([0]*len(odom_pose[0]),0*len(odom_pose[1])) # only zeros
+
+        x = odom_pose_ref[0] + odom_pose[0] * np.cos(odom_pose_ref[2] + odom_pose[2])
+        y = odom_pose_ref[1] + odom_pose[1] * np.sin(odom_pose_ref[2] + odom_pose[2])
+        
+        corrected_pose = [x,y]
 
         return corrected_pose
 
@@ -50,6 +66,8 @@ class TinySlam:
 
         best_score = 0
 
+        # best_score = _score(lidar, raw_odom_pose)
+
         return best_score
 
     def update_map(self, lidar, pose):
@@ -59,27 +77,6 @@ class TinySlam:
         pose : [x, y, theta] nparray, corrected pose in world coordinates
         """
         # TODO for TP3 
-        # angles = lidar.get_ray_angles()
-        # array[array > 3] = 3
-        '''ranges = np.random.rand(360)
-        ray_angles = np.arange(-np.pi,np.pi,np.pi/180)
-        points_x = ranges * np.cos(ray_angles)
-        points_y = ranges * np.sin(ray_angles)
-        points = np.vstack((points_x, points_y))
-
-        bigValue = 30
-        smallValue = 3
-        noValue = 0
-
-        values = lidar.get_sensor_values()
-
-        xVectors = np.array([values[i]*np.cos(i) for i in range(len(values))])
-        yVectors = np.array([values[i]*np.sin(i) for i in range(len(values))])
-        points = np.array([[xVectors[i] + pose[0], yVectors[i] + pose[1]] for i in values])
-
-        self.grid.add_map_points(xVectors,yVectors,bigValue)
-        for i in range(len(values)):
-            self.grid.add_map_line(pose[0],pose[1],points[0],points[1],smallValue)'''
 
         PROBABILITY_BASE = 1
         SECURITY_RANGE = 10
